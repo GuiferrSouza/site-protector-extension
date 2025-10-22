@@ -1,0 +1,1 @@
+const s="siteProtectorSettings",o={forbiddenWords:["phishing","malware"],blacklist:[],exactList:[],whitelist:["https://www.google.com/"],protectionEnabled:!0};async function n(){return new Promise(t=>{chrome.storage.local.get([s],e=>{t(e[s]??o)})})}async function r(t){return new Promise(e=>{chrome.storage.local.set({[s]:t},()=>e())})}export{n as g,r as s};
