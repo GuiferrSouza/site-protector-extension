@@ -63,6 +63,7 @@
     if (settings?.protectionEnabled) {
         blockers.ipDomain(domain, url) ||
             blockers.punycodeDomain(domain, url) ||
+            blockers.hiddenDomain(url) ||
             blockers.excessiveSubdomains(domain, url, 4) ||
             blockers.excessiveSpecialChars(domain, url, 3) ||
             blockers.dataUri(url) ||
