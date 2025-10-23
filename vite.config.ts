@@ -7,25 +7,29 @@ export default defineConfig({
   plugins: [
     react(),
     viteStaticCopy({
-      targets: [{ src: "public/manifest.json", dest: "." }],
+      targets: [
+        { src: "public/manifest.json", dest: "." },
+        { src: "public/assets/icons/*", dest: "assets/icons" }
+      ]
     })
   ],
   build: {
     outDir: "build",
     target: "esnext",
+    emptyOutDir: true,
     rollupOptions: {
       input: {
         index: resolve(__dirname, "./index.html"),
         content: resolve(__dirname, "./src/content.ts"),
-        settings: resolve(__dirname, "./src/settings.ts")
+        settings: resolve(__dirname, "./src/settings.ts"),
+        blocked: resolve(__dirname, "./src/blocked.ts"),
       },
       output: {
-        entryFileNames: "assets/[name].js",
-        chunkFileNames: "assets/[name].js",
-        assetFileNames: "assets/[name].[ext]",
-        format: "es",
+        entryFileNames: "src/[name].js",
+        chunkFileNames: "src/[name].js",
+        assetFileNames: "src/[name].[ext]",
+        format: "es"
       }
     },
-    emptyOutDir: true
   }
 });

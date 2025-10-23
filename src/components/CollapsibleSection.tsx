@@ -13,7 +13,17 @@ interface CollapsibleSectionProps {
     color: string;
 }
 
-export default function CollapsibleSection({ title, icon: Icon, items, onAdd, onRemove, newItem, setNewItem, placeholder, color }: CollapsibleSectionProps) {
+export default function CollapsibleSection({
+    title,
+    icon: Icon,
+    items,
+    onAdd,
+    onRemove,
+    newItem,
+    setNewItem,
+    placeholder,
+    color
+}: CollapsibleSectionProps) {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
@@ -44,7 +54,7 @@ export default function CollapsibleSection({ title, icon: Icon, items, onAdd, on
                             Nenhum item adicionado
                         </div>
                     ) : (
-                        <div className="space-y-2 max-h-40 overflow-y-auto">
+                        <div className="space-y-2">
                             {items.map((item, index) => (
                                 <div key={index} className="flex items-center justify-between bg-gray-900 px-3 py-2 rounded-lg group hover:bg-gray-850 transition-colors">
                                     <span className="text-xs truncate flex-1 mr-2">{item}</span>

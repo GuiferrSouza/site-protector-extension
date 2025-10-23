@@ -2,17 +2,17 @@ const STORAGE_KEY = "siteProtectorSettings";
 
 export interface ExtensionSettings {
   forbiddenWords: string[];
-  blacklist: string[];
-  exactList: string[];
-  whitelist: string[];
+  forbiddenTdls: string[];
+  forbiddenDomains: string[];
+  forbiddenUrls: string[];
   protectionEnabled: boolean;
 }
 
 const defaultSettings: ExtensionSettings = {
   forbiddenWords: ["phishing", "malware"],
-  blacklist: [],
-  exactList: [],
-  whitelist: ["https://www.google.com/"],
+  forbiddenTdls: ["tk", "ml", "ga", "cf", "gq", "xyz", "top", "work"],
+  forbiddenDomains: [],
+  forbiddenUrls: [],
   protectionEnabled: true,
 };
 

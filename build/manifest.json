@@ -3,6 +3,11 @@
   "name": "Site Protector",
   "version": "1.0.0",
   "description": "Keep you safe from malicious and unwanted websites.",
+  "icons": {
+    "16": "assets/icons/shield-16.png",
+    "48": "assets/icons/shield-48.png",
+    "128": "assets/icons/shield-128.png"
+  },
   "permissions": [
     "storage",
     "scripting",
@@ -21,7 +26,7 @@
         "<all_urls>"
       ],
       "js": [
-        "assets/content.js"
+        "src/content.js"
       ],
       "run_at": "document_start"
     }
@@ -29,7 +34,7 @@
   "web_accessible_resources": [
     {
       "resources": [
-        "assets/settings.js",
+        "src/settings.js",
         "blocked.html"
       ],
       "matches": [

@@ -5,15 +5,15 @@ import Header from "./components/Header";
 import CollapsibleSection from "./components/CollapsibleSection";
 import Footer from "./components/Footer";
 import LoadingScreen from "./components/LoadingScreen";
-import { Lock, Globe, Link, CheckCircle2 } from "lucide-react";
+import { Lock, Globe, Link, FileX } from "lucide-react";
 
 export default function App() {
   const [settings, setSettings] = useState<ExtensionSettings | null>(null);
   const [loading, setLoading] = useState(true);
-  const [newWord, setNewWord] = useState("");
-  const [newBlacklist, setNewBlacklist] = useState("");
-  const [newWhitelist, setNewWhitelist] = useState("");
-  const [newExact, setNewExact] = useState("");
+  const [newForbiddenWord, setNewForbiddenWord] = useState("");
+  const [newForbiddenDomains, setNewForbiddenDomains] = useState("");
+  const [newForbiddenUrls, setNewForbiddenUrls] = useState("");
+  const [newForbiddenTdls, setNewForbiddenTdls] = useState("");
 
   useEffect(() => {
     getSettings().then((data) => {
@@ -33,69 +33,82 @@ export default function App() {
     return <LoadingScreen />;
   }
 
-  const totalRules = settings.forbiddenWords.length + settings.blacklist.length + settings.exactList.length;
+  const {
+    forbiddenWords,
+    forbiddenDomains,
+    forbiddenUrls,
+    forbiddenTdls,
+    protectionEnabled
+  } = settings;
+
+  const totalRules = [
+    forbiddenWords,
+    forbiddenDomains,
+    forbiddenUrls,
+    forbiddenTdls
+  ].reduce((sum, arr) => sum + arr.length, 0);
 
   return (
     <div className="w-[420px] h-[600px] bg-gray-900 text-white flex flex-col">
-      <Header protectionEnabled={settings.protectionEnabled} onToggle={(checked) => updateSetting({ protectionEnabled: checked })} />
+      <Header protectionEnabled={protectionEnabled} onToggle={(checked) => updateSetting({ protectionEnabled: checked })} />
 
       <div className="flex-1 overflow-y-auto px-4 py-4 space-y-2">
-        <CollapsibleSection title="Forbidden Words" icon={Lock} items={settings.forbiddenWords} onAdd={() => {
-          if (!newWord.trim()) return;
-          updateSetting({ forbiddenWords: [...settings.forbiddenWords, newWord.trim()] });
-          setNewWord("");
+        <CollapsibleSection title="Forbidden Words" icon={Lock} items={forbiddenWords} onAdd={() => {
+          if (!newForbiddenWord.trim()) return;
+          updateSetting({ forbiddenWords: [newForbiddenWord.trim(), ...forbiddenWords] });
+          setNewForbiddenWord("");
         }}
           onRemove={(item) =>
-            updateSetting({ forbiddenWords: settings.forbiddenWords.filter((i) => i !== item) })
+            updateSetting({ forbiddenWords: forbiddenWords.filter((i) => i !== item) })
           }
-          newItem={newWord}
-          setNewItem={setNewWord}
+          newItem={newForbiddenWord}
+          setNewItem={setNewForbiddenWord}
           placeholder="Type a word..."
           color="text-red-400" />
 
-        <CollapsibleSection title="Dark List" icon={Globe} items={settings.blacklist} onAdd={() => {
-          if (!newBlacklist.trim()) return;
-          updateSetting({ blacklist: [...settings.blacklist, newBlacklist.trim()] });
-          setNewBlacklist("");
+        <CollapsibleSection title="Forbidden Domains" icon={Globe} items={forbiddenDomains} onAdd={() => {
+          if (!newForbiddenDomains.trim()) return;
+          updateSetting({ forbiddenDomains: [newForbiddenDomains.trim(), ...forbiddenDomains] });
+          setNewForbiddenDomains("");
         }}
           onRemove={(item) =>
-            updateSetting({ blacklist: settings.blacklist.filter((i) => i !== item) })
+            updateSetting({ forbiddenDomains: forbiddenDomains.filter((i) => i !== item) })
           }
-          newItem={newBlacklist}
-          setNewItem={setNewBlacklist}
+          newItem={newForbiddenDomains}
+          setNewItem={setNewForbiddenDomains}
           placeholder="https://example.com"
           color="text-orange-400" />
 
-        <CollapsibleSection title="Exact URLs" icon={Link} items={settings.exactList} onAdd={() => {
-          if (!newExact.trim()) return;
-          updateSetting({ exactList: [...settings.exactList, newExact.trim()] });
-          setNewExact("");
+        <CollapsibleSection title="Forbidden URLs" icon={Link} items={forbiddenUrls} onAdd={() => {
+          if (!newForbiddenUrls.trim()) return;
+          updateSetting({ forbiddenUrls: [newForbiddenUrls.trim(), ...forbiddenUrls] });
+          setNewForbiddenUrls("");
         }}
           onRemove={(item) =>
-            updateSetting({ exactList: settings.exactList.filter((i) => i !== item) })
+            updateSetting({ forbiddenUrls: forbiddenUrls.filter((i) => i !== item) })
           }
-          newItem={newExact}
-          setNewItem={setNewExact}
+          newItem={newForbiddenUrls}
+          setNewItem={setNewForbiddenUrls}
           placeholder="https://example.com/page"
           color="text-purple-400"
         />
 
-        <CollapsibleSection title="White List" icon={CheckCircle2} items={settings.whitelist} onAdd={() => {
-          if (!newWhitelist.trim()) return;
-          updateSetting({ whitelist: [...settings.whitelist, newWhitelist.trim()] });
-          setNewWhitelist("");
+        <CollapsibleSection title="Forbidden TDLs" icon={FileX} items={forbiddenTdls} onAdd={() => {
+          if (!newForbiddenTdls.trim()) return;
+          updateSetting({ forbiddenTdls: [newForbiddenTdls.trim(), ...forbiddenTdls] });
+          setNewForbiddenTdls("");
         }}
           onRemove={(item) =>
-            updateSetting({ whitelist: settings.whitelist.filter((i) => i !== item) })
+            updateSetting({ forbiddenTdls: forbiddenTdls.filter((i) => i !== item) })
           }
-          newItem={newWhitelist}
-          setNewItem={setNewWhitelist}
-          placeholder="https://example.com"
-          color="text-green-400"
+          newItem={newForbiddenTdls}
+          setNewItem={setNewForbiddenTdls}
+          placeholder="xyz"
+          color="text-blue-400"
         />
       </div>
 
-      <Footer totalRules={totalRules} allowedSites={settings.whitelist.length} />
+      <Footer totalRules={totalRules} />
     </div>
   );
 }
